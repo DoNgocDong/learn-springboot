@@ -1,8 +1,10 @@
 package com.example.test.service;
 
-import com.example.test.model.AccountEntity;
+import com.example.test.model.Account;
 import com.example.test.repository.AccountRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -12,7 +14,11 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public AccountEntity createAccount(AccountEntity account) {
+    public Account createAccount(Account account) {
         return accountRepository.save(account);
+    }
+
+    public List<Account> getAll() {
+        return accountRepository.findAll();
     }
 }

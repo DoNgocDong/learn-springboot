@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AccountEntity extends Timestamp {
+public class Account extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,10 +24,10 @@ public class AccountEntity extends Timestamp {
     public boolean equals(Object o) {
         if (this == o) return true;
 
-        if (!(o instanceof AccountEntity))
+        if (!(o instanceof Account))
             return false;
 
-        return id != null && id.equals( ((AccountEntity) o).id );
+        return id != null && id.equals( ((Account) o).id );
     }
 
     @Override
