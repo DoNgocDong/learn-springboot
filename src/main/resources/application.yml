@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: test
+
+  data:
+    rest:
+      base-path: /api
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: thaicucquyen
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    generate-ddl: true
+    open-in-view: false
+    show-sql: true
+
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+
+server:
+  port: 8080
+
+
+
