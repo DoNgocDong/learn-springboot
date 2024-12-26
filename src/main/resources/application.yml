@@ -22,6 +22,16 @@ spring:
     basename: i18n/messages
     encoding: UTF-8
 
+logging:
+  file:
+    name: logs/access_log.log
+  level:
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+  logback:
+    rollingpolicy:
+      max-history: 7
+      clean-history-on-start: true
+
 dubbo:
   application:
     name: dubbo-provider-demo

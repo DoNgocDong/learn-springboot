@@ -48,7 +48,6 @@ public class ApiExceptionHandler {
                 .message(message)
                 .build();
 
-        log.error(e.getMessage(), e);
         return ResponseEntity.status(status).body(res);
     }
 }
