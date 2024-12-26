@@ -1,5 +1,9 @@
 package com.example.test.dubbo.api;
 
+import org.springframework.http.ResponseEntity;
+
 public interface AccountService {
-    String hello(String name);
+
+    ResponseEntity<String> hello(String name);
+
 }
