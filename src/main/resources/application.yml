@@ -1,30 +1,35 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: test
-
   data:
     rest:
       base-path: /api
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/test?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
     username: root
     password: Admin@123
-
   jpa:
     hibernate:
       ddl-auto: none
     generate-ddl: true
     open-in-view: false
     show-sql: true
-
   messages:
     basename: i18n/messages
     encoding: UTF-8
 
-server:
-  port: 8080
-
-
-
+dubbo:
+  application:
+    name: dubbo-provider-demo
+    logger: slf4j
+  protocol:
+    name: dubbo
+    port: 20880
+  registry:
+    address: zookeeper://127.0.0.1:2181
+  scan:
+    base-packages: com.example.test
