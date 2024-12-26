@@ -31,5 +31,3 @@ dubbo:
     port: 20880
   registry:
     address: zookeeper://127.0.0.1:2181
-  scan:
-    base-packages: com.example.test

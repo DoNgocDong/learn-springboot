@@ -1,11 +1,11 @@
 package com.example.test.dubbo.provider;
 
-import com.example.test.dubbo.api.AccountService;
+import com.example.test.dubbo.api.AccountProvider;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.http.ResponseEntity;
 
 @DubboService
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl implements AccountProvider {
 
     @Override
     public ResponseEntity<String> hello(String name) {
