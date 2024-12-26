@@ -1,33 +1,54 @@
 package com.example.test.exception;
 
 import com.example.test.dtos.response.ErrorResponseDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
+import com.example.test.utils.LocaleUtils;
+import com.example.test.utils.MessageKeys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Locale;
 
-@RestControllerAdvice
+@Slf4j
+@ControllerAdvice
 public class ApiExceptionHandler {
-    @Autowired
-    private MessageSource messageSource;
+    private final LocaleUtils localeUtils;
+
+    public ApiExceptionHandler(LocaleUtils localeUtils) {
+        this.localeUtils = localeUtils;
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request) {
-        Locale locale = request.getLocale();
-        String message = messageSource.getMessage("err.notfound", null, locale);
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        String message = localeUtils.getLocaleMsg(MessageKeys.NOT_FOUND_ERR, request);
 
         ErrorResponseDTO res = ErrorResponseDTO
                 .builder()
-                .code(HttpStatus.NOT_FOUND.value())
+                .code(status.value())
                 .message(message)
                 .build();
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
+        log.error(e.getMessage(), e);
+        return ResponseEntity.status(status).body(res);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponseDTO> handleException(Exception e, WebRequest request) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        String message = localeUtils.getLocaleMsg(MessageKeys.INTERNAL_SERVER_ERR, request);
+
+        ErrorResponseDTO res = ErrorResponseDTO
+                .builder()
+                .code(status.value())
+                .message(message)
+                .build();
+
+        log.error(e.getMessage(), e);
+        return ResponseEntity.status(status).body(res);
     }
 }
