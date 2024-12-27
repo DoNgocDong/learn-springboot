@@ -6,19 +6,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class AccountService {
-    private final AccountRepository accountRepository;
+public interface AccountService {
+    Account createAccount(Account account);
 
-    public AccountService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
+    List<Account> getAll();
 
-    public Account createAccount(Account account) {
-        return accountRepository.save(account);
-    }
-
-    public List<Account> getAll() {
-        return accountRepository.findAll();
-    }
+    Account getById(Long id);
 }

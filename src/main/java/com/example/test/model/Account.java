@@ -1,7 +1,9 @@
 package com.example.test.model;
 
-import com.example.test.dtos.UserRole;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
@@ -15,10 +17,21 @@ public class Account extends Timestamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email-format incorrect")
     private String email;
+
+    @NotBlank(message = "Password is required")
+    @Size(
+        min = 5, max = 20,
+        message = "Password length must be 5-20 char")
     private String password;
+
+    @NotBlank(message = "Role is required")
+    private String role;
+
     private String name;
-    private UserRole role;
 
     @Override
     public boolean equals(Object o) {

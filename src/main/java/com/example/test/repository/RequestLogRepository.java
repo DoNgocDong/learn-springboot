@@ -7,5 +7,4 @@ import org.springframework.http.ResponseEntity;
 
 @RepositoryRestResource
 public interface RequestLogRepository extends JpaRepository<RequestLog, Long> {
-    ResponseEntity<RequestLog> create(RequestLog requestLog);
 }

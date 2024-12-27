@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import java.util.Locale;
-
 @Slf4j
 @ControllerAdvice
 public class ApiExceptionHandler {
@@ -37,17 +35,17 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(status).body(res);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDTO> handleException(Exception e, WebRequest request) {
-        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        String message = localeUtils.getLocaleMsg(MessageKeys.INTERNAL_SERVER_ERR, request);
-
-        ErrorResponseDTO res = ErrorResponseDTO
-                .builder()
-                .code(status.value())
-                .message(message)
-                .build();
-
-        return ResponseEntity.status(status).body(res);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorResponseDTO> handleException(Exception e, WebRequest request) {
+//        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+//        String message = localeUtils.getLocaleMsg(MessageKeys.INTERNAL_SERVER_ERR, request);
+//
+//        ErrorResponseDTO res = ErrorResponseDTO
+//                .builder()
+//                .code(status.value())
+//                .message(message)
+//                .build();
+//
+//        return ResponseEntity.status(status).body(res);
+//    }
 }
