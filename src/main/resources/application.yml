@@ -30,6 +30,8 @@ logging:
     rollingpolicy:
       max-history: 7
       clean-history-on-start: true
+  charset:
+    console: UTF-8
 
 dubbo:
   application:
@@ -40,3 +42,10 @@ dubbo:
     port: 20880
   registry:
     address: zookeeper://127.0.0.1:2181
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+  packages-to-scan: com.example.test.controller

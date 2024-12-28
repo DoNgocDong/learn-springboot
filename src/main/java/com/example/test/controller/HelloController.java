@@ -1,5 +1,9 @@
 package com.example.test.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,13 @@ public class HelloController {
         this.messageSource = messageSource;
     }
 
+    @Operation(summary = "Greeting API", description = "Greeting your name")
+    @ApiResponse(responseCode = "200", description = "OK",
+        content = {
+            @Content(examples = @ExampleObject(
+                    value = "Hello World"
+            ))
+    })
     @GetMapping("/greeting")
     public ResponseEntity<String> sayHello(
         @RequestParam(name = "name", defaultValue = "World") String name,
