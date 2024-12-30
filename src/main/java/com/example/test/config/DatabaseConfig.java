@@ -15,8 +15,6 @@ public class DatabaseConfig {
 
     @Bean
     public AuditorAware<String> auditorProvider() {
-        return () -> {
-            return Optional.of("admin");
-        };
+        return () -> Optional.of("admin");
     }
 }

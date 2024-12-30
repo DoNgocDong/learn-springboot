@@ -1,0 +1,30 @@
+# Bỏ qua thư mục build và target (nơi chứa các tệp biên dịch và artifacts)
+build/
+target/
+
+# Bỏ qua thư mục .git (thư mục quản lý mã nguồn của Git)
+.git/
+.gitignore
+
+# Bỏ qua các tệp cấu hình IDE (như IntelliJ IDEA, Eclipse)
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# Bỏ qua tệp nhị phân của môi trường phát triển
+logs/
+*.log
+*.bak
+*.swp
+
+# Bỏ qua các thư mục tạm thời của hệ điều hành
+.DS_Store
+Thumbs.db
+
+# Bỏ qua tệp cấu hình của hệ thống
+*.sublime-project
+*.sublime-workspace
+
+.sonar/
+.sonarlint/
