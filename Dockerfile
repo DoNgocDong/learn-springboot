@@ -10,7 +10,7 @@ COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 
 # install toan bo dependencies
-RUN ./nvmw dependency:go-offline
+RUN ./mvnw dependency:go-offline
 
 # Copy all(exclue in dockerignore) to workdir
 COPY . .
