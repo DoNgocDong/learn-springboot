@@ -1,15 +1,16 @@
 package com.example.test.service;
 
 import com.example.test.model.Category;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 
 import java.util.List;
 
 public interface CategoryService {
-    Category getById(Long id);
+    Category getById(Long id) throws ResourceNotFoundException;
 
     List<Category> getAllCategories();
 
     Category create(Category data);
 
-    Boolean deleteById(Long id);
+    void deleteById(Long id);
 }

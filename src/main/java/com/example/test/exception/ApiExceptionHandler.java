@@ -54,6 +54,14 @@ public class ApiExceptionHandler {
         return buildResponseError(status, msg, null, request, e);
     }
 
+    @ExceptionHandler(ResourceExistedException.class)
+    public ResponseEntity<ErrorResponseDTO> handleResourceExistedException(ResourceExistedException e, WebRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
+        String msg = e.getMessage();
+
+        return buildResponseError(status, msg, null, request, e);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleException(Exception e, WebRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
