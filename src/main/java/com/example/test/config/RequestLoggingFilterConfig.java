@@ -1,23 +1,45 @@
 package com.example.test.config;
 
-import org.springframework.context.annotation.Bean;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.web.filter.OncePerRequestFilter;
 
+import java.io.IOException;
+
+@Slf4j
 @Configuration
-public class RequestLoggingFilterConfig {
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class RequestLoggingFilterConfig extends OncePerRequestFilter {
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
 
-    @Bean
-    public CommonsRequestLoggingFilter requestLoggingFilter() {
-        CommonsRequestLoggingFilter filter = new CommonsRequestLoggingFilter();
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if(request.getRequestURI().toLowerCase().contains(contextPath)) {
+            long startTime = System.currentTimeMillis();
+            try {
+                filterChain.doFilter(request, response);
+            }
+            finally {
+                long processTime = System.currentTimeMillis() - startTime;
 
-        filter.setIncludeClientInfo(true);
-        filter.setIncludeQueryString(true);
-        filter.setIncludeHeaders(true);
-        filter.setIncludePayload(true);
-        filter.setMaxPayloadLength(10000);
-        filter.setAfterMessagePrefix("REQUEST DATA: ");
-
-        return filter;
+                log.info("{} {} [{}] {} {}ms",
+                        request.getMethod(),
+                        request.getRequestURI(),
+                        request.getContentType(),
+                        response.getStatus(),
+                        processTime);
+            }
+        }
+        else {
+            filterChain.doFilter(request, response);
+        }
     }
 }

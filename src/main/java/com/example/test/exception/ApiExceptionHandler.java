@@ -35,15 +35,15 @@ public class ApiExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponseDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException e, WebRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
+        String message = localeUtils.getLocaleMsg(MessageKeys.REQUEST_BODY_INVALID, request);
 
-        String msg = "Request body is invalid";
         List<String> errors = e.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(err -> err.getField() + ": " + err.getDefaultMessage())
                 .toList();
 
-        return buildResponseError(status, msg, errors, request, e);
+        return buildResponseError(status, message, errors, request, e);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
