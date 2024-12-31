@@ -2,6 +2,7 @@ package com.example.test.controller.auth;
 
 import com.example.test.model.Account;
 import com.example.test.service.AccountService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping(value = "/accounts")
+@Tag(name = "AccountController")
 public class AccountController {
     private final AccountService accountService;
 
