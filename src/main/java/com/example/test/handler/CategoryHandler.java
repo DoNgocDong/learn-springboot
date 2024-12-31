@@ -35,8 +35,10 @@ public class CategoryHandler {
         return categoryService.create(category);
     }
 
-    public void deleteById(Long id) {
+    public Category deleteById(Long id) {
         Category category = categoryService.getById(id);
         categoryService.deleteById((category.getId()));
+
+        return category;
     }
 }
