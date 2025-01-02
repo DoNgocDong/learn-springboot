@@ -35,6 +35,15 @@ public class CategoryHandler {
         return categoryService.create(category);
     }
 
+    public Category updateCategory(Long id, Category data) {
+        Category category = categoryService.getById(id);
+
+        category.setName(data.getName());
+        category.setDescription(data.getDescription());
+
+        return categoryService.update(category);
+    }
+
     public Category deleteById(Long id) {
         Category category = categoryService.getById(id);
         categoryService.deleteById((category.getId()));

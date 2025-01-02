@@ -39,6 +39,18 @@ public class CategoryController {
         return buildApiResponse(status, msg, category);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponseDTO<Category>> updateCategory(@PathVariable(name = "id") Long id,
+                                                                   @Valid @RequestBody Category data)
+    {
+        Category category = categoryHandler.updateCategory(id, data);
+
+        HttpStatus status = HttpStatus.OK;
+        String msg = "Updated category!";
+
+        return buildApiResponse(status, msg, category);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponseDTO<Category>> deleteCategoryById(@PathVariable(name = "id") Long id) {
         Category category = categoryHandler.deleteById(id);

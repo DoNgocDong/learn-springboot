@@ -4,6 +4,9 @@ import com.example.test.model.Category;
 import com.example.test.repository.CategoryRepository;
 import com.example.test.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
+    @Cacheable(value = "categories", key = "#id")
     public Category getById(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow( () -> new ResourceNotFoundException("Category with id " + id + " not found") );
@@ -27,15 +31,17 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category create(Category data) {
-        Category category = Category.builder()
-                .name(data.getName())
-                .description(data.getDescription())
-                .build();
-
-        return categoryRepository.save(category);
+        return categoryRepository.save(data);
     }
 
     @Override
+    @CachePut(value = "categories", key = "#updateData.id")
+    public Category update(Category updateData) {
+        return categoryRepository.save(updateData);
+    }
+
+    @Override
+    @CacheEvict(value = "categories", key = "#id")
     public void deleteById(Long id) {
         categoryRepository.deleteById(id);
     }
