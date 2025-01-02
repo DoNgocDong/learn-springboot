@@ -6,20 +6,26 @@ server:
 spring:
   application:
     name: test
+
+  # database
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/test?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
-    username: ${db.username}
-    password: ${db.password}
+    username: ${db.username:root}
+    password: ${db.password:Admin@123}
   jpa:
     hibernate:
       ddl-auto: none
     generate-ddl: true
     open-in-view: false
     show-sql: true
+
+  # i18n
   messages:
     basename: i18n/messages
     encoding: UTF-8
+
+  # hashicorp/vault
   config:
     import: vault://
   cloud:
@@ -30,6 +36,14 @@ spring:
       kv:
         enabled: true
         backend: secret
+
+  # caching/redis
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 logging:
   file:
