@@ -67,6 +67,45 @@ dubbo:
   registry:
     address: zookeeper://127.0.0.1:2181
 
+# Resilience4j
+## circuitbreaker
+resilience4j.circuitbreaker:
+  instances:
+    circuitbreaker-conf:
+      register-health-indicator: true
+      failure-rate-threshold: 50
+      wait-duration-in-open-state:
+        seconds: 10
+      permitted-number-of-calls-in-half-open-state: 10
+      sliding-window-size: 100
+## retry
+resilience4j.retry:
+  instances:
+    retry-conf:
+      max-attempts: 3
+      wait-duration:
+        seconds: 5
+## rate limit
+resilience4j.ratelimiter:
+  instances:
+    rateLimit-conf:
+      limit-for-period: 10
+      limit-refresh-period:
+        seconds: 5
+## bulkhead
+resilience4j.bulkhead:
+  instances:
+    bulkhead-conf:
+      max-concurrent-calls: 5
+      max-wait-duration:
+        seconds: 5
+## time limit
+resilience4j.timelimiter:
+  instances:
+    timeLimit-conf:
+      timeout-duration:
+        seconds: 3
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
