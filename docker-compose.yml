@@ -1,0 +1,33 @@
+services:
+
+  vault:
+    image: hashicorp/vault:latest
+    container_name: vault
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: "vault-root-token"
+      VAULT_ADDR: "http://127.0.0.1:8200"
+    ports:
+      - "8200:8200"
+    volumes:
+      - ./vault/data:/vault/data
+      - ./vault/config:/vault/config
+    cap_add:
+      - IPC_LOCK
+    healthcheck:
+      test: ["CMD", "vault", "status"]
+    command:
+      - vault server -dev -dev-root-token-id=vault-root-token
+    restart: unless-stopped
+
+  vault-setup:
+    image: alpine:latest
+    container_name: vault-setup
+    depends_on:
+      - vault
+    entrypoint: |
+      /bin/sh -c "curl
+      --header 'X-Vault-Token: vault-root-token; X-Vault-Request: true; Content-Type: application/json'
+      --request POST 
+      --data '{"data": {"db.username": "root", "db.password": "Admin@123"}}' 
+      http://127.0.0.1:8200/v1/secret/data/test"
+    restart: no
