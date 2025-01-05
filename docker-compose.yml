@@ -1,13 +1,13 @@
 services:
-
   vault:
     image: hashicorp/vault:latest
-    container_name: vault
+    container_name: vault-ctn
+    command: "server -dev -dev-root-token-id=vault-root-token"
+    ports:
+      - "8200:8200"
     environment:
       VAULT_DEV_ROOT_TOKEN_ID: "vault-root-token"
       VAULT_ADDR: "http://127.0.0.1:8200"
-    ports:
-      - "8200:8200"
     volumes:
       - ./vault/data:/vault/data
       - ./vault/config:/vault/config
@@ -15,19 +15,28 @@ services:
       - IPC_LOCK
     healthcheck:
       test: ["CMD", "vault", "status"]
-    command:
-      - vault server -dev -dev-root-token-id=vault-root-token
     restart: unless-stopped
 
-  vault-setup:
-    image: alpine:latest
-    container_name: vault-setup
+  #Kafka
+  zookeeper:
+    container_name: zookeeper-ctn
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2182"
+  kafka:
+    container_name: kafka-ctn
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
-      - vault
-    entrypoint: |
-      /bin/sh -c "curl
-      --header 'X-Vault-Token: vault-root-token; X-Vault-Request: true; Content-Type: application/json'
-      --request POST 
-      --data '{"data": {"db.username": "root", "db.password": "Admin@123"}}' 
-      http://127.0.0.1:8200/v1/secret/data/test"
-    restart: no
+      - zookeeper

@@ -17,7 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.Locale;
 
 @RestController
-@RequestMapping(value = "/", consumes = MediaType.ALL_VALUE)
+@RequestMapping("/")
 @Tag(name = "HelloController")
 public class HelloController {
     private final MessageSource messageSource;

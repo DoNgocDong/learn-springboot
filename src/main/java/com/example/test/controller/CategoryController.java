@@ -9,14 +9,26 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping(value = "/categories")
+@RequestMapping("/categories")
 @Tag(name = "CategoryController")
 public class CategoryController {
     private final CategoryHandler categoryHandler;
 
     public CategoryController(CategoryHandler categoryHandler) {
         this.categoryHandler = categoryHandler;
+    }
+
+    @GetMapping("")
+    public ResponseEntity<ApiResponseDTO<List<Category>>> getCategories() {
+        List<Category> data = categoryHandler.findAll();
+
+        HttpStatus status = HttpStatus.OK;
+        String msg = "Get categories successfully";
+
+        return buildApiResponse(status, msg, data);
     }
 
     @GetMapping("/{id}")
@@ -61,8 +73,8 @@ public class CategoryController {
         return buildApiResponse(status, msg, category);
     }
 
-    private ResponseEntity<ApiResponseDTO<Category>> buildApiResponse(HttpStatus status, String message, Category data) {
-        ApiResponseDTO<Category> res = ApiResponseDTO.<Category>builder()
+    private <T> ResponseEntity<ApiResponseDTO<T>> buildApiResponse(HttpStatus status, String message, T data) {
+        ApiResponseDTO<T> res = ApiResponseDTO.<T>builder()
                 .code(status.value())
                 .data(data)
                 .message(message)

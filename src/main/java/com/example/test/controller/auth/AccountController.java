@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/accounts")
+@RequestMapping("/accounts")
 @Tag(name = "AccountController")
 public class AccountController {
     private final AccountService accountService;

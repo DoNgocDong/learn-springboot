@@ -37,6 +37,30 @@ spring:
         enabled: true
         backend: secret
 
+    # Cloud stream - kafka
+    stream:
+      bindings:
+        input: ## Consumer
+          destination: demo-input-topic
+          group: demo-group
+        output: ## Producer
+          destination: demo-output-topic
+      kafka:
+        binder:
+          brokers: localhost:9092
+          replication-factor: 1
+          min-partition-count: 2
+          auto-add-partitions: true
+          auto-create-topics: true
+
+  kafka:
+    consumer:
+      group-id: demo-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
   # caching/redis
   cache:
     type: redis
