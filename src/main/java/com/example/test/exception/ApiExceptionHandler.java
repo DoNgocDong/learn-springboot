@@ -3,6 +3,7 @@ package com.example.test.exception;
 import com.example.test.dtos.response.ErrorResponseDTO;
 import com.example.test.utils.LocaleUtils;
 import com.example.test.utils.MessageKeys;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;

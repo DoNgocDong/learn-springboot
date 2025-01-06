@@ -4,6 +4,10 @@ server:
     context-path: /api
 
 spring:
+  main:
+    lazy-initialization: true
+  jmx:
+    enabled: false
   application:
     name: test
 
@@ -40,11 +44,10 @@ spring:
     # Cloud stream - kafka
     stream:
       bindings:
-        input: ## Consumer
-          destination: demo-input-topic
-          group: demo-group
-        output: ## Producer
-          destination: demo-output-topic
+        category-out-0:
+          destination: serviceA-topic
+        product-out-0:
+          destination: serviceB-topic
       kafka:
         binder:
           brokers: localhost:9092
@@ -52,15 +55,12 @@ spring:
           min-partition-count: 2
           auto-add-partitions: true
           auto-create-topics: true
+      binders:
+        kafka1:
+          type: kafka
+          environment:
+            spring: { cloud: { stream: { kafka: { binder: { brokers: localhost:9092, zkNodes: localhost:2181 } } } } }
 
-  kafka:
-    consumer:
-      group-id: demo-group
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
   # caching/redis
   cache:
     type: redis

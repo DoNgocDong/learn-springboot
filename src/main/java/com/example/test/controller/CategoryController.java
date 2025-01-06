@@ -2,9 +2,11 @@ package com.example.test.controller;
 
 import com.example.test.dtos.response.ApiResponseDTO;
 import com.example.test.handler.CategoryHandler;
+import com.example.test.messaging.CategoryMsgEmitter;
 import com.example.test.model.Category;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/categories")
 @Tag(name = "CategoryController")
+@RequiredArgsConstructor
 public class CategoryController {
     private final CategoryHandler categoryHandler;
-
-    public CategoryController(CategoryHandler categoryHandler) {
-        this.categoryHandler = categoryHandler;
-    }
+    private final CategoryMsgEmitter categoryMsgEmitter;
 
     @GetMapping("")
     public ResponseEntity<ApiResponseDTO<List<Category>>> getCategories() {
@@ -37,6 +37,7 @@ public class CategoryController {
 
         HttpStatus status = HttpStatus.OK;
         String msg = "Get category successfully";
+        categoryMsgEmitter.send(category);
 
         return buildApiResponse(status, msg, category);
     }
