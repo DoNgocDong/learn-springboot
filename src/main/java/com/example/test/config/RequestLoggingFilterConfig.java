@@ -17,12 +17,12 @@ import java.io.IOException;
 @Configuration
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RequestLoggingFilterConfig extends OncePerRequestFilter {
-    @Value("${server.servlet.context-path}")
-    private String contextPath;
+//    @Value("${server.servlet.context-path}")
+//    private String contextPath;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(request.getRequestURI().toLowerCase().contains(contextPath)) {
+//        if(request.getRequestURI().toLowerCase().contains(contextPath)) {
             long startTime = System.currentTimeMillis();
             try {
                 filterChain.doFilter(request, response);
@@ -37,9 +37,9 @@ public class RequestLoggingFilterConfig extends OncePerRequestFilter {
                         response.getStatus(),
                         processTime);
             }
-        }
-        else {
-            filterChain.doFilter(request, response);
-        }
+//        }
+//        else {
+//            filterChain.doFilter(request, response);
+//        }
     }
 }

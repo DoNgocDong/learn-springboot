@@ -17,7 +17,7 @@ services:
       test: ["CMD", "vault", "status"]
     restart: unless-stopped
 
-  #Kafka
+  # Zookeeper
   zookeeper:
     container_name: zookeeper-ctn
     image: confluentinc/cp-zookeeper:latest
@@ -26,6 +26,8 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
     ports:
       - "2181:2182"
+
+  # Kafka
   kafka:
     container_name: kafka-ctn
     image: confluentinc/cp-kafka:latest
@@ -40,3 +42,34 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
+
+  # Dubbo
+  dubbo:
+    image: dubbo/dubbo-admin:latest
+    container_name: dubbo-admin
+    ports:
+      - "20880:20880"
+    environment:
+      ZOOKEEPER_ADDRESS: zookeeper:2181
+    depends_on:
+      - zookeeper
+
+  # Keycloak
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak
+    ports:
+      - "8080:8080"
+    environment:
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+
+      KC_LOG_LEVEL: info
+      KC_METRICS_ENABLED: true
+      KC_HEALTH_ENABLED: true
+
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command: "start-dev"

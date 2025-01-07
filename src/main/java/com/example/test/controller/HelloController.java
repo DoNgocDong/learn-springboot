@@ -26,6 +26,11 @@ public class HelloController {
         this.messageSource = messageSource;
     }
 
+    @GetMapping("")
+    public ResponseEntity<String> home() {
+        return ResponseEntity.ok("<h1>HOME PAGE</h1>");
+    }
+
     @Operation(summary = "Greeting API", description = "Greeting your name")
     @ApiResponse(responseCode = "200", description = "OK",
         content = {
