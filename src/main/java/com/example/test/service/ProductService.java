@@ -8,6 +8,8 @@ import java.util.List;
 public interface ProductService {
     Product getById(Long id) throws ResourceNotFoundException;
 
+    Product getByName(String name) throws ResourceNotFoundException;
+
     List<Product> getAllProducts();
 
     Product create(Product data);
@@ -15,4 +17,6 @@ public interface ProductService {
     Product update(Product data);
 
     void deleteById(Long id);
+
+    boolean existsByName(String name);
 }

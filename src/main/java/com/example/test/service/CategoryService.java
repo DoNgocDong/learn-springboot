@@ -15,4 +15,6 @@ public interface CategoryService {
     Category update(Category data);
 
     void deleteById(Long id);
+
+    boolean existsByName(String name);
 }

@@ -12,4 +12,6 @@ public interface AccountService {
     List<Account> getAll();
 
     Account getById(Long id);
+
+    boolean existedByEmail(String email);
 }

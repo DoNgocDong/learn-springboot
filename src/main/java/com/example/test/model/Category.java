@@ -1,7 +1,6 @@
 package com.example.test.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +18,6 @@ public class Category extends AuditEntity {
     private Long id;
 
     @Column(unique = true)
-    @NotBlank(message = "category_name is required")
     private String name;
 
     private String description;

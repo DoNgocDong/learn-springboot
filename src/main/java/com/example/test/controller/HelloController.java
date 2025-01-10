@@ -26,7 +26,7 @@ public class HelloController {
         this.messageSource = messageSource;
     }
 
-    @GetMapping("")
+    @GetMapping({"/", ""})
     public ResponseEntity<String> home() {
         return ResponseEntity.ok("<h1>HOME PAGE</h1>");
     }

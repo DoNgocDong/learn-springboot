@@ -25,6 +25,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product getByName(String name) {
+        return productRepository.findByName(name)
+                .orElseThrow( () -> new ResourceNotFoundException("Product with name '" + name + "' not found") );
+    }
+
+    @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -44,5 +50,10 @@ public class ProductServiceImpl implements ProductService {
     @CacheEvict(value = "products", key = "#id")
     public void deleteById(Long id) {
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return productRepository.existsByName(name);
     }
 }

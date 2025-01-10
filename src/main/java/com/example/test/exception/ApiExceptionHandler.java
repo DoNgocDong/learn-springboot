@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 
@@ -25,10 +26,18 @@ public class ApiExceptionHandler {
         this.localeUtils = localeUtils;
     }
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handleNoResourceFoundException(NoResourceFoundException e, WebRequest request) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        String message = localeUtils.getLocaleMsg(MessageKeys.PATH_NOT_FOUND, request);
+
+        return buildResponseError(status, message, null, request, e);
+    }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseDTO> handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
-        String message = localeUtils.getLocaleMsg(MessageKeys.NOT_FOUND_ERR, request);
+        String message = localeUtils.getLocaleMsg(MessageKeys.RESOURCE_NOT_FOUND_ERR, request);
 
         return buildResponseError(status, message, null, request, e);
     }
@@ -45,14 +54,6 @@ public class ApiExceptionHandler {
                 .toList();
 
         return buildResponseError(status, message, errors, request, e);
-    }
-
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponseDTO> handleDataIntegrityViolationException(DataIntegrityViolationException e, WebRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String msg = e.getMessage();
-
-        return buildResponseError(status, msg, null, request, e);
     }
 
     @ExceptionHandler(ResourceExistedException.class)

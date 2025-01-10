@@ -1,7 +1,6 @@
 package com.example.test.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +18,6 @@ public class Product extends AuditEntity{
     private Long id;
 
     @Column(nullable = false, length = 100)
-    @NotBlank(message = "product_name is required")
     private String name;
 
     @Column(columnDefinition = "LONGTEXT")
@@ -29,6 +27,20 @@ public class Product extends AuditEntity{
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @NotBlank(message = "price is required")
     private int price;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (!(o instanceof Product))
+            return false;
+
+        return id != null && id.equals( ((Product) o).id );
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

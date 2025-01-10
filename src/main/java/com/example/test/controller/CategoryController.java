@@ -1,9 +1,11 @@
 package com.example.test.controller;
 
+import com.example.test.dtos.payload.CategoryDTO;
 import com.example.test.dtos.response.ApiResponseDTO;
 import com.example.test.handler.CategoryHandler;
 import com.example.test.messaging.CategoryMsgEmitter;
 import com.example.test.model.Category;
+import com.example.test.utils.ResponseUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +21,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryHandler categoryHandler;
-    private final CategoryMsgEmitter categoryMsgEmitter;
+    private final ResponseUtil responseUtil;
 
-    @GetMapping("")
+    @GetMapping({"/", ""})
     public ResponseEntity<ApiResponseDTO<List<Category>>> getCategories() {
         List<Category> data = categoryHandler.findAll();
 
         HttpStatus status = HttpStatus.OK;
         String msg = "Get categories successfully";
 
-        return buildApiResponse(status, msg, data);
+        return responseUtil.buildApiResponse(status, msg, data);
     }
 
     @GetMapping("/{id}")
@@ -37,31 +39,31 @@ public class CategoryController {
 
         HttpStatus status = HttpStatus.OK;
         String msg = "Get category successfully";
-        categoryMsgEmitter.send(category);
+//        categoryMsgEmitter.send(category);
 
-        return buildApiResponse(status, msg, category);
+        return responseUtil.buildApiResponse(status, msg, category);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<ApiResponseDTO<Category>> createCategory(@Valid @RequestBody Category data) {
+    @PostMapping({"/", ""})
+    public ResponseEntity<ApiResponseDTO<Category>> createCategory(@Valid @RequestBody CategoryDTO data) {
         Category category = categoryHandler.createCategory(data);
 
         HttpStatus status = HttpStatus.CREATED;
         String msg = "Created category!";
 
-        return buildApiResponse(status, msg, category);
+        return responseUtil.buildApiResponse(status, msg, category);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponseDTO<Category>> updateCategory(@PathVariable(name = "id") Long id,
-                                                                   @Valid @RequestBody Category data)
+                                                                   @Valid @RequestBody CategoryDTO data)
     {
         Category category = categoryHandler.updateCategory(id, data);
 
         HttpStatus status = HttpStatus.OK;
         String msg = "Updated category!";
 
-        return buildApiResponse(status, msg, category);
+        return responseUtil.buildApiResponse(status, msg, category);
     }
 
     @DeleteMapping("/{id}")
@@ -71,16 +73,6 @@ public class CategoryController {
         HttpStatus status = HttpStatus.OK;
         String msg = "Deleted category!";
 
-        return buildApiResponse(status, msg, category);
-    }
-
-    private <T> ResponseEntity<ApiResponseDTO<T>> buildApiResponse(HttpStatus status, String message, T data) {
-        ApiResponseDTO<T> res = ApiResponseDTO.<T>builder()
-                .code(status.value())
-                .data(data)
-                .message(message)
-                .build();
-
-        return ResponseEntity.status(status).body(res);
+        return responseUtil.buildApiResponse(status, msg, category);
     }
 }

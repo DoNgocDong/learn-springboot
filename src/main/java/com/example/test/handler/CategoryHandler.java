@@ -1,8 +1,8 @@
 package com.example.test.handler;
 
+import com.example.test.dtos.payload.CategoryDTO;
 import com.example.test.exception.ResourceExistedException;
 import com.example.test.model.Category;
-import com.example.test.repository.CategoryRepository;
 import com.example.test.service.CategoryService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,6 @@ import java.util.List;
 @Transactional
 public class CategoryHandler {
     private final CategoryService categoryService;
-    private final CategoryRepository categoryRepository;
 
     public List<Category> findAll() {
         return categoryService.getAllCategories();
@@ -25,17 +24,22 @@ public class CategoryHandler {
         return categoryService.getById(id);
     }
 
-    public Category createCategory(Category category) {
-        boolean exists = categoryRepository.existsByName(category.getName());
+    public Category createCategory(CategoryDTO data) {
+        boolean exists = categoryService.existsByName(data.getName());
 
         if (exists) {
-            throw new ResourceExistedException("category name already exists");
+            throw new ResourceExistedException("Category name already exists");
         }
+
+        Category category = Category.builder()
+                .name(data.getName())
+                .description(data.getDescription())
+                .build();
 
         return categoryService.create(category);
     }
 
-    public Category updateCategory(Long id, Category data) {
+    public Category updateCategory(Long id, CategoryDTO data) {
         Category category = categoryService.getById(id);
 
         category.setName(data.getName());

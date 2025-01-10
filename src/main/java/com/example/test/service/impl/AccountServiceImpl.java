@@ -31,4 +31,9 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.findById(id)
                 .orElseThrow( () -> new ResourceNotFoundException("Account not found") );
     }
+
+    @Override
+    public boolean existedByEmail(String email) {
+        return accountRepository.existsByEmail(email);
+    }
 }
