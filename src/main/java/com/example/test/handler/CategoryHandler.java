@@ -4,6 +4,7 @@ import com.example.test.dtos.payload.CategoryDTO;
 import com.example.test.exception.ResourceExistedException;
 import com.example.test.model.Category;
 import com.example.test.service.CategoryService;
+import com.example.test.utils.MessageKeys;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class CategoryHandler {
         boolean exists = categoryService.existsByName(data.getName());
 
         if (exists) {
-            throw new ResourceExistedException("Category name already exists");
+            throw new ResourceExistedException(MessageKeys.CATEGORY_EXISTED, data.getName());
         }
 
         Category category = Category.builder()

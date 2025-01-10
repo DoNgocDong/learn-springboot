@@ -5,6 +5,7 @@ import com.example.test.exception.ResourceExistedException;
 import com.example.test.model.Account;
 import com.example.test.service.AccountService;
 import com.example.test.utils.Encoder;
+import com.example.test.utils.MessageKeys;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class AccountHandler {
         boolean exists = accountService.existedByEmail(data.getEmail());
 
         if (exists) {
-            throw new ResourceExistedException("Email already created!");
+            throw new ResourceExistedException(MessageKeys.ACCOUNT_EXISTED, data.getEmail());
         }
 
         Account account = Account.builder()

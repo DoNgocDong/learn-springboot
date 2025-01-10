@@ -59,7 +59,7 @@ public class ApiExceptionHandler {
     @ExceptionHandler(ResourceExistedException.class)
     public ResponseEntity<ErrorResponseDTO> handleResourceExistedException(ResourceExistedException e, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
-        String msg = e.getMessage();
+        String msg = localeUtils.getLocaleMsg(e.getMsgKey(), request, e.getArgs());
 
         return buildResponseError(status, msg, null, request, e);
     }
@@ -80,7 +80,10 @@ public class ApiExceptionHandler {
                 .errors(errors)
                 .build();
 
-        log.error(message, e);
+        if(HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
+            log.error(e.getMessage(), e);
+        }
+
         return ResponseEntity.status(status).body(res);
     }
 }

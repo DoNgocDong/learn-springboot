@@ -22,7 +22,6 @@ spring:
       ddl-auto: none
     generate-ddl: true
     open-in-view: false
-    show-sql: true
 
   # i18n
   messages:
@@ -91,6 +90,8 @@ logging:
   file:
     name: logs/access_log.log
   level:
+    org.hibernate.SQL: off
+    org.hibernate.type.descriptor.sql: off
     org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
   logback:
     rollingpolicy:
