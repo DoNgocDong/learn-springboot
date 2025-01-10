@@ -1,13 +1,17 @@
 package com.example.test.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @MappedSuperclass
@@ -16,8 +20,16 @@ import java.time.ZonedDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class AuditEntity {
     @CreatedDate
-    private ZonedDateTime createdAt;
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private ZonedDateTime updatedAt;
+    private LocalDateTime updatedAt;
+
+    @CreatedBy
+    @Column(updatable = false)
+    String createdBy;
+
+    @LastModifiedBy
+    String updatedBy;
 }

@@ -1,7 +1,7 @@
 server:
   port: 8080
-#  servlet:
-#    context-path: /api
+  servlet:
+    context-path: /api
 
 spring:
   main:
@@ -70,19 +70,19 @@ spring:
       port: 6379
 
   # Security
-  security:
-    oauth2:
-      client:
-        registration:
-          keycloak:
-            client-id: demo-client
-            client-secret: Zg0rKiVASypzfuBiZa27EfcGmLgNOQlT
-            scope: openid, profile, email
-            authorization-grant-type: authorization_code
-            redirect-uri: "http://localhost:8080/login/oauth2/code/demo-client"
-        provider:
-          keycloak:
-            issuer-uri: http://localhost:8180/realms/master
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          keycloak:
+#            client-id: demo-client
+#            client-secret: Zg0rKiVASypzfuBiZa27EfcGmLgNOQlT
+#            scope: openid, profile, email
+#            authorization-grant-type: authorization_code
+#            redirect-uri: "http://localhost:8080/login/oauth2/code/demo-client"
+#        provider:
+#          keycloak:
+#            issuer-uri: http://localhost:8180/realms/master
 #      resourceserver:
 #        jwt:
 #          jwk-set-uri: http://localhost:8180/realms/master/protocol/openid-connect/certs
