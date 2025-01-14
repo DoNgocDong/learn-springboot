@@ -17,7 +17,6 @@ public class ErrorResponseDTO {
     @Schema(description = "Error code", example = "400")
     private int code;
 
-    @NotBlank(message = "err msg is required")
     @Schema(description = "Message accompanying", example = "Invalid account info")
     private String message;
 

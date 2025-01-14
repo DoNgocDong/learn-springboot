@@ -1,5 +1,6 @@
 package com.example.test.dtos.response;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ApiResponseDTO<T> {
+    @Schema(description = "Status code", example = "200")
     private int code;
 
-    @NotNull(message = "response_msg is required")
+    @Schema(description = "Message accompanying", example = "Get data success!")
     private String message;
 
+    @Schema(description = "Response Payload")
     private T data;
 }
